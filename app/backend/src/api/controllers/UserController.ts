@@ -20,11 +20,16 @@ export default class UserController {
       const user = await this._service.login(email);
       if (await compare(password, user.password)) {
         const token = await genToken(email);
-        console.log('teste');
         return res.status(200).json({ token });
       } throw new Error();
     } catch {
       res.status(401).json({ message: 'Invalid email or password' });
     }
   }
+
+  getRole = async (req: Request, res: Response) => {
+    const { jwt } = req.body;
+    const user = await this._service.login(jwt.data.email);
+    return res.status(200).json({ role: user.role });
+  };
 }
