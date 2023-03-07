@@ -5,6 +5,7 @@ import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import User from '../database/models/UserModel';
+import ILogin from '../api/interfaces/ILogin';
 
 import { Response } from 'superagent';
 
@@ -31,7 +32,7 @@ describe('01 - Testa Users', () => {
   });
 
   it('para o método Post com falha', async () => {
-    const loginMock: ILogin ={ email: 'emailFalso.com', password: 404 };
+    const loginMock: ILogin ={ email: 'emailFalso.com', password: '404' };
     const failedTokenMock = { message: 'Invalid email or password' }
     const result = await chai.request(app).get('/login').send(failedTokenMock);
 
