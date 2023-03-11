@@ -18,5 +18,10 @@ routerMatch.patch(
   validateJWT.verifyJWT,
   (req: Request, res: Response) => matchController.updateMatch(req, res),
 );
+routerMatch.post(
+  '/matches',
+  validateJWT.verifyJWT,
+  (req: Request, res: Response) => matchController.createMatch(req, res),
+);
 
 export default routerMatch;

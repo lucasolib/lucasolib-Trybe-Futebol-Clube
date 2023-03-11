@@ -5,4 +5,9 @@ export default interface IMatchService {
   finishMatch(id: number): Promise<number>,
   updateMatch(id: number,
     payload: { homeTeamGoals: number, awayTeamGoals: number }): Promise<number>;
+  createMatch(payload: {
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+    homeTeamId: number,
+    awayTeamId: number }): Promise<Match>;
 }

@@ -26,4 +26,19 @@ export default class MatchService implements IMatchService {
       awayTeamGoals: payload.awayTeamGoals }, { where: { id } });
     return match[0];
   }
+
+  async createMatch(payload: {
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+    homeTeamId: number,
+    awayTeamId: number }): Promise<MatchModel> {
+    const match = await this.model.create({
+      homeTeamGoals: payload.homeTeamGoals,
+      homeTeamId: payload.homeTeamId,
+      awayTeamGoals: payload.awayTeamGoals,
+      awayTeamId: payload.awayTeamId,
+      inProgress: true,
+    }, { fields: ['homeTeamGoals', 'homeTeamId', 'awayTeamGoals', 'awayTeamId', 'inProgress'] });
+    return match;
+  }
 }
