@@ -16,7 +16,7 @@ export default class MatchService implements IMatchService {
   }
 
   async finishMatch(id: number): Promise<number> {
-    const match = await this.model.update({ inProgress: true }, { where: { id } });
+    const match = await this.model.update({ inProgress: false }, { where: { id } });
     return match[0];
   }
 }
