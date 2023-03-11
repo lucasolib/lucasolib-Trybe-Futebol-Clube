@@ -13,49 +13,52 @@ class Match extends Model {
 
 Match.init({
   id: {
-    type: INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  homeTeamId: {
-    type: INTEGER,
     allowNull: false,
-    references: {
-      model: 'teams',
-      key: 'id',
-    },
+    autoIncrement: true,
+    primaryKey: true,
+    type: INTEGER,
   },
   homeTeamGoals: {
-    type: INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  awayTeamId: {
-    type: INTEGER,
     allowNull: false,
+    type: INTEGER,
+    field: 'home_team_goals',
+  },
+  awayTeamGoals: {
+    allowNull: false,
+    type: INTEGER,
+    field: 'away_team_goals',
+  },
+  inProgress: {
+    allowNull: false,
+    type: BOOLEAN,
+    field: 'in_progress',
+  },
+  homeTeamId: {
+    allowNull: false,
+    type: INTEGER,
+    field: 'home_team_id',
     references: {
       model: 'teams',
       key: 'id',
     },
   },
-  awayTeamGoals: {
+  awayTeamId: {
+    allowNull: false,
     type: INTEGER,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  inProgress: {
-    type: BOOLEAN,
+    field: 'away_team_id',
+    references: {
+      model: 'teams',
+      key: 'id',
+    },
   },
 }, {
   underscored: true,
   sequelize: db,
+  modelName: 'matches',
   timestamps: false,
 });
 
-Match.belongsTo(Team, { foreignKey: 'home_team_id', as: 'homeTeamId' });
-Match.belongsTo(Team, { foreignKey: 'away_team_id', as: 'awayTeamId' });
-
-Team.belongsTo(Match, { foreignKey: 'home_team_id', as: 'homeTeamId' });
-Team.belongsTo(Match, { foreignKey: 'away_team_id', as: 'awayTeamId' });
+Match.belongsTo(Team, { foreignKey: 'home_team_id', as: 'homeTeam' });
+Match.belongsTo(Team, { foreignKey: 'away_team_id', as: 'awayTeam' });
 
 export default Match;
