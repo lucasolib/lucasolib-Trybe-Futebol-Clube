@@ -19,4 +19,11 @@ export default class MatchService implements IMatchService {
     const match = await this.model.update({ inProgress: false }, { where: { id } });
     return match[0];
   }
+
+  async updateMatch(id: number, payload: { homeTeamGoals: number, awayTeamGoals: number }):
+  Promise<number> {
+    const match = await this.model.update({ homeTeamGoals: payload.homeTeamGoals,
+      awayTeamGoals: payload.awayTeamGoals }, { where: { id } });
+    return match[0];
+  }
 }

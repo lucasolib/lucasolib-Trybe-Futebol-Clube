@@ -13,5 +13,10 @@ routerMatch.patch(
   validateJWT.verifyJWT,
   (req: Request, res: Response) => matchController.finishMatch(req, res),
 );
+routerMatch.patch(
+  '/matches/:id',
+  validateJWT.verifyJWT,
+  (req: Request, res: Response) => matchController.updateMatch(req, res),
+);
 
 export default routerMatch;
