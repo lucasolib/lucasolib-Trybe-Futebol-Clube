@@ -31,14 +31,18 @@ export default class MatchService implements IMatchService {
     homeTeamGoals: number,
     awayTeamGoals: number,
     homeTeamId: number,
-    awayTeamId: number }): Promise<MatchModel> {
-    const match = await this.model.create({
-      homeTeamGoals: payload.homeTeamGoals,
-      homeTeamId: payload.homeTeamId,
-      awayTeamGoals: payload.awayTeamGoals,
-      awayTeamId: payload.awayTeamId,
-      inProgress: true,
-    }, { fields: ['homeTeamGoals', 'homeTeamId', 'awayTeamGoals', 'awayTeamId', 'inProgress'] });
-    return match;
+    awayTeamId: number }): Promise<MatchModel | string> {
+    try {
+      const match = await this.model.create({
+        homeTeamGoals: payload.homeTeamGoals,
+        homeTeamId: payload.homeTeamId,
+        awayTeamGoals: payload.awayTeamGoals,
+        awayTeamId: payload.awayTeamId,
+        inProgress: true,
+      }, { fields: ['homeTeamGoals', 'homeTeamId', 'awayTeamGoals', 'awayTeamId', 'inProgress'] });
+      return match;
+    } catch (error) {
+      return 'There is no team with such id';
+    }
   }
 }

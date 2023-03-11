@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
 import IMatchService from '../interfaces/IMatchService';
+import ITeamService from '../interfaces/ITeamService';
 
 export default class MatchController {
   private _service: IMatchService;
+  private _teamService: ITeamService;
 
-  constructor(service: IMatchService) {
+  constructor(service: IMatchService, teamService: ITeamService) {
     this._service = service;
+    this._teamService = teamService;
   }
 
   async getAll(req: Request, res: Response) {
@@ -33,7 +36,14 @@ export default class MatchController {
 
   async createMatch(req: Request, res: Response) {
     const payload = req.body;
+    if (payload.awayTeamId === payload.homeTeamId) {
+      return res.status(422)
+        .json({ message: 'It is not possible to create a match with two equal teams' });
+    }
     const match = await this._service.createMatch(payload);
+    if (typeof match === 'string') {
+      return res.status(404).json({ message: 'There is no team with such id!' });
+    }
     return res.status(201).json(match);
   }
 }

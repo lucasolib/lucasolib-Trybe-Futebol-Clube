@@ -2,10 +2,12 @@ import { Request, Response, Router } from 'express';
 import MatchService from '../services/MatchService';
 import MatchController from '../controllers/MatchController';
 import validateJWT from '../middlewares/validateJWT';
+import TeamService from '../services/TeamService';
 
 const routerMatch = Router();
 const matchService = new MatchService();
-const matchController = new MatchController(matchService);
+const teamService = new TeamService();
+const matchController = new MatchController(matchService, teamService);
 
 routerMatch.get('/matches', (req: Request, res: Response) => matchController.getAll(req, res));
 routerMatch.patch(

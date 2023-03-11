@@ -9,5 +9,5 @@ export default interface IMatchService {
     homeTeamGoals: number,
     awayTeamGoals: number,
     homeTeamId: number,
-    awayTeamId: number }): Promise<Match>;
+    awayTeamId: number }): Promise<Match | string>;
 }
