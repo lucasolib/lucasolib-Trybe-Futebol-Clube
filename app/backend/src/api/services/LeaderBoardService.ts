@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import { ModelStatic, literal, ProjectionAlias } from 'sequelize';
 import Team from '../../database/models/TeamModel';
 import Match from '../../database/models/MatchModel';
@@ -55,6 +54,7 @@ class LeaderBoardService {
       group: ['home_team_id'],
       where: { inProgress: false },
     });
+    console.log(matches);
     return matches;
   }
 
@@ -70,15 +70,12 @@ class LeaderBoardService {
     return matches;
   }
 
-  public async Leaderboard(): Promise<ILeaderBoard[]> {
-    const awayMatches = await this.awayLeaderboard();
-    const homeMatches = await this.homeLeaderboard();
-    const fullMatches = awayMatches.map((awayMatch) => {
+  static mapMatches(array: Match[], secondArray: Match[]): ILeaderBoard[] {
+    return array.map((awayMatch: Match) => {
       const AMatch = awayMatch.dataValues;
-      const homeMatch = homeMatches.find((match) => AMatch.name === match.dataValues.name);
+      const homeMatch = secondArray.find((match: Match) => AMatch.name === match.dataValues.name);
       const HMatch = homeMatch?.dataValues;
-      return ({
-        name: AMatch.name,
+      return ({ name: AMatch.name,
         totalPoints: Number(AMatch.totalPoints) + Number(HMatch.totalPoints),
         totalGames: Number(AMatch.totalGames) + Number(HMatch.totalGames),
         totalVictories: Number(AMatch.totalVictories) + Number(HMatch.totalVictories),
@@ -91,6 +88,12 @@ class LeaderBoardService {
         / ((Number(AMatch.totalGames) + Number(HMatch.totalGames)) * 3)) * 100).toFixed(2),
       });
     });
+  }
+
+  public async Leaderboard(): Promise<ILeaderBoard[]> {
+    const awayMatches = await this.awayLeaderboard();
+    const homeMatches = await this.homeLeaderboard();
+    const fullMatches = LeaderBoardService.mapMatches(awayMatches, homeMatches);
     return fullMatches;
   }
 }
