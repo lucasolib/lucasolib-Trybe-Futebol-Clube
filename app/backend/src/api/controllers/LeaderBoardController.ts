@@ -8,8 +8,13 @@ export default class LeaderBoardController {
     this._leaderBoardService = _leaderBoardService;
   }
 
-  public async getLeaderBoardHome(_req: Request, res: Response) {
+  public async getHomeLeaderBoard(_req: Request, res: Response) {
     const leaderBoard = await this._leaderBoardService.homeLeaderboard();
+    return res.status(200).json(leaderBoard);
+  }
+
+  public async getAwayLeaderBoard(_req: Request, res: Response) {
+    const leaderBoard = await this._leaderBoardService.awayLeaderboard();
     return res.status(200).json(leaderBoard);
   }
 }

@@ -6,6 +6,7 @@ const routerLeaderBoard = Router();
 const service = new LeaderBoardService();
 const controller = new LeaderBoardController(service);
 
-routerLeaderBoard.get('/leaderboard/home', (req, res) => controller.getLeaderBoardHome(req, res));
+routerLeaderBoard.get('/leaderboard/home', (req, res) => controller.getHomeLeaderBoard(req, res));
+routerLeaderBoard.get('/leaderboard/away', (req, res) => controller.getAwayLeaderBoard(req, res));
 
 export default routerLeaderBoard;
