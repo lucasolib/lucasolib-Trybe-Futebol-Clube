@@ -1,6 +1,8 @@
+/* eslint-disable max-lines-per-function */
 import { ModelStatic, literal, ProjectionAlias } from 'sequelize';
 import Team from '../../database/models/TeamModel';
 import Match from '../../database/models/MatchModel';
+import ILeaderBoard from '../interfaces/ILeaderBoard';
 
 class LeaderBoardService {
   protected modelMatches: ModelStatic<Match> = Match;
@@ -66,6 +68,30 @@ class LeaderBoardService {
       where: { inProgress: false },
     });
     return matches;
+  }
+
+  public async Leaderboard(): Promise<ILeaderBoard[]> {
+    const awayMatches = await this.awayLeaderboard();
+    const homeMatches = await this.homeLeaderboard();
+    const fullMatches = awayMatches.map((awayMatch) => {
+      const AMatch = awayMatch.dataValues;
+      const homeMatch = homeMatches.find((match) => AMatch.name === match.dataValues.name);
+      const HMatch = homeMatch?.dataValues;
+      return ({
+        name: AMatch.name,
+        totalPoints: Number(AMatch.totalPoints) + Number(HMatch.totalPoints),
+        totalGames: Number(AMatch.totalGames) + Number(HMatch.totalGames),
+        totalVictories: Number(AMatch.totalVictories) + Number(HMatch.totalVictories),
+        totalDraws: Number(AMatch.totalDraws) + Number(HMatch.totalDraws),
+        totalLosses: Number(AMatch.totalLosses) + Number(HMatch.totalLosses),
+        goalsFavor: Number(AMatch.goalsFavor) + Number(HMatch.goalsFavor),
+        goalsOwn: Number(AMatch.goalsOwn) + Number(HMatch.goalsOwn),
+        goalsBalance: Number(AMatch.goalsBalance) + Number(HMatch.goalsBalance),
+        efficiency: (((Number(AMatch.totalPoints) + Number(HMatch.totalPoints))
+        / ((Number(AMatch.totalGames) + Number(HMatch.totalGames)) * 3)) * 100).toFixed(2),
+      });
+    });
+    return fullMatches;
   }
 }
 export default LeaderBoardService;
