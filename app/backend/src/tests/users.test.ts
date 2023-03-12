@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('01 - Testa Users', () => {
+describe('02 - Testa Users', () => {
   const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIn0sImlhdCI6MTY3ODIwNDEzMiwiZXhwIjoxNjc4MjQ3MzMyfQ.ofqcxZJPhT526jcf1Zl4XrKjTDJDkcVJcIzywpQl6sY';
   afterEach(function () {
     sinon.restore();
